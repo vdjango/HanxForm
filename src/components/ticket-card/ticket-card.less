@@ -1,0 +1,94 @@
+@deep: ~'>>>';
+
+.ticket-card {
+  .box-list {
+    width: min-content;
+    display: -webkit-inline-box;
+    display: inline-block;
+    margin: 20px;
+
+    .ticket-box {
+      width: 43.5em;
+      height: 18em;
+      background: url('../../assets/ticket/m1.png') center center no-repeat;
+      background-size: 100% 100%;
+      display: flex;
+      overflow: hidden;
+
+      .title-main-top {
+        width: inherit;
+        width: -webkit-fill-available;
+        height: min-content;
+        color: #303133;
+        font-size: x-large;
+        padding: 23px;
+
+        .title {
+          float: left;
+
+        }
+
+        .title-mini {
+          float: right;
+          font-size: 13px;
+          margin-top: 15px;
+        }
+      }
+
+      .money {
+        margin: auto;
+        font-size: 48px;
+        margin-right: auto;
+        margin-left: auto;
+        left: auto;
+        right: auto;
+        position: absolute;
+        padding: 3.3em .9em;
+      }
+
+      .ticket-box-bottom {
+        width: inherit;
+        height: 4.4em;
+        background: url('../../assets/ticket/BottomTexture.png') no-repeat;
+        background-size: 100% 100%;
+        display: inline;
+        position: absolute;
+        margin-top: 13.6em;
+
+        .texture {
+          float: left;
+          margin: 2em 1em 1em 1.3em;
+        }
+
+        .texture-image {
+          float: right;
+          background: url('../../assets/ticket/erwm_ba.png') no-repeat;
+          background-size: 100% 100%;
+          width: 105px;
+          height: 125px;
+          margin: 31px;
+          margin-top: -68px;
+
+          .erwm-image {
+            width: 95px;
+            height: 95px;
+            margin: 5px;
+            display: flex;
+
+            @{deep} .el-image {
+              margin: auto;
+            }
+          }
+
+          .text {
+            font-size: 3px;
+            margin-top: 3px;
+            padding: 0 4px;
+          }
+        }
+
+      }
+    }
+
+  }
+}

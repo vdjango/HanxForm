@@ -1,0 +1,31 @@
+@deep: ~'>>>';
+
+.login {
+  .login-hello {
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    display: flex;
+    padding: 50px 0 50px 0;
+    font-size: xx-large;
+  }
+
+  .login-check {
+    display: flow-root;
+    padding: 0px 3px 10px 3px;
+
+    .left {
+      float: left;
+    }
+
+    .right {
+      float: right;
+      bottom: -5px;
+    }
+  }
+
+  @{deep} label {
+    font-size: larger;
+  }
+}
