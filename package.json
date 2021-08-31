@@ -16,6 +16,7 @@
     "js-cookie": "^2.2.1",
     "js-striphtml": "^1.1.2",
     "sass": "^1.35.2",
+    "view-design": "^4.6.1",
     "vue": "^3.0.0",
     "vue-moment": "^4.1.0",
     "vue-router": "^4.0.0-0",

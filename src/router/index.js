@@ -3,6 +3,9 @@ import {createRouter, createWebHistory} from 'vue-router'
 const Auth = () => import('../views/auth/auth')
 const AuthLogin = () => import('../views/auth/login/login')
 
+const Order = () => import('../views/order/order')
+const OrderUser = () => import('../views/order/user/index')
+
 const CreateActivity = () => import('../views/create-activity/create-activity.vue')
 const CreateActivityTicket = () => import('../views/create-activity/ticket/ticket.vue')
 const CreateActivityWriting = () => import('../views/create-activity/writing/writing.vue')
@@ -16,6 +19,26 @@ const routes = [
         redirect: {
             name: 'activity'
         }
+    },
+    {
+        path: '/order',
+        name: 'order',
+        component: Order,
+        meta: {
+            requiresAuth: true
+        },
+        children: [
+            {
+                path: 'user',
+                name: 'order-user',
+                meta: {
+                    requiresAuth: true
+                },
+                components: {
+                    order: OrderUser
+                }
+            }
+        ]
     },
     {
         path: '/activity',
