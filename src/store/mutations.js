@@ -18,8 +18,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 export default {
-  // 设置App视图开关状态[用于刷新App视图]
-  setIsRouterAlive: function (state, value) {
-    state.isRouterAlive = value
-  }
+    // 设置App视图开关状态[用于刷新App视图]
+    setIsRouterAlive(state, value) {
+        state.isRouterAlive = value
+    },
+    setLeftMenu(state, value) {
+        state.leftMenu = value
+    },
+    setTopPath(state, value) {
+        state.topPath = value
+    },
+    setTopHeader(state, value) {
+        state.topHeader = value
+    },
+    setTopActive(state, value) {
+        state.topActive = value
+    }
 }

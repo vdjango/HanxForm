@@ -18,8 +18,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 export default {
-  // 获取App视图开关状态[用于刷新App视图]
-  getIsRouterAlive: function (state) {
-    return state.isRouterAlive
-  }
+    // 获取App视图开关状态[用于刷新App视图]
+    getIsRouterAlive: function (state) {
+        return state.isRouterAlive
+    },
+    getTopActive: function (state) {
+        return state.topActive
+    },
+    getLeftMenu: function (state) {
+        return state.leftMenu
+    },
+    getTopPath: function (state) {
+        return state.topPath
+    },
+    getTopHeader: function (state) {
+        return state.topHeader
+    }
 }

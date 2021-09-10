@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
 
+const Index = () => import('../views/index')
 const Auth = () => import('../views/auth/auth')
 const AuthLogin = () => import('../views/auth/login/login')
 
@@ -14,28 +15,28 @@ import store from '../store/index'
 
 
 const routes = [
+    // {
+    //     path: '/',
+    //     redirect: {
+    //         name: 'index'
+    //     }
+    // },
     {
         path: '/',
-        redirect: {
-            name: 'activity'
-        }
-    },
-    {
-        path: '/order',
-        name: 'order',
-        component: Order,
+        name: 'index',
+        component: Index,
         meta: {
             requiresAuth: true
         },
         children: [
             {
-                path: 'user',
-                name: 'order-user',
+                path: 'order',
+                name: 'order',
                 meta: {
                     requiresAuth: true
                 },
                 components: {
-                    order: OrderUser
+                    index: Order
                 }
             }
         ]

@@ -16,6 +16,9 @@ const Storage = [
     ['activity/setActiveFormId', 'ActiveFormId'],
 ]
 
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+
+
 let auth = false
 
 
@@ -27,8 +30,6 @@ router.beforeEach(async (to, from, next) => {
     //     user: '1748011755',
     //     verify: true
     // })
-
-
 
 
     const autherization = Cookies.getCookieAutherization()
@@ -75,8 +76,9 @@ router.beforeEach(async (to, from, next) => {
 })
 
 
-const th = createApp(App)
-    .use(router)
+const th = createApp(App).use({
+    locale: zhCn,
+}).use(router)
     .use(store)
     .mount('#app')
 
