@@ -4,6 +4,8 @@ const Index = () => import('../views/index')
 const Auth = () => import('../views/auth/auth')
 const AuthLogin = () => import('../views/auth/login/login')
 
+const BallotIndex = () => import('../views/ballot/index')
+
 const Order = () => import('../views/order/order')
 const OrderUser = () => import('../views/order/user/index')
 
@@ -29,6 +31,16 @@ const routes = [
             requiresAuth: true
         },
         children: [
+            {
+                path: 'ballot',
+                name: 'ballot',
+                meta: {
+                    requiresAuth: true
+                },
+                components: {
+                    index: BallotIndex
+                }
+            },
             {
                 path: 'order',
                 name: 'order',

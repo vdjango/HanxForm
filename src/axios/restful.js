@@ -26,7 +26,12 @@ const auth = {
 const app = {
     activity: 'app/activity/',
     activity_amap: 'app/activity-amap/',
-    activity_ticket: 'app/activity-ticket/',
+    activity_ticket: 'app/activity-ticket/'
+}
+
+const payment = {
+    pay_info: 'payment/pay-info/',
+    pay_refund: 'payment/pay-refund/',
 }
 
 /*
@@ -93,3 +98,26 @@ export function activityTicket(index = null) {
     if ((index && index !== 'null')) return app.activity_ticket + index + '/'
     return app.activity_ticket
 }
+
+
+/**
+ * 活动已购门票信息
+ * @param index
+ * @returns {string}
+ */
+export function paymentPayInfo(index = null) {
+    if ((index && index !== 'null')) return payment.pay_info + index + '/'
+    return payment.pay_info
+}
+
+/**
+ * 活动退票信息
+ * @param index
+ * @returns {string}
+ */
+export function paymentPayRefund(index = null) {
+    if ((index && index !== 'null')) return payment.pay_refund + index + '/'
+    return payment.pay_refund
+}
+
+

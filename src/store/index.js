@@ -23,7 +23,7 @@ export default createStore({
             },
             {
                 toRouter: {
-                    name: 'order'
+                    name: 'ballot'
                 },
                 name: '售票',
                 icon: 'el-icon-s-ticket',

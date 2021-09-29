@@ -3,6 +3,7 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import axios from './axios/index'
+import {ElLoading} from 'element-plus'
 
 import 'element-plus/lib/theme-chalk/index.css'
 import LocalStorage from "./utils/LocalStorage";
@@ -79,7 +80,7 @@ router.beforeEach(async (to, from, next) => {
 const th = createApp(App).use({
     locale: zhCn,
 }).use(router)
-    .use(store)
+    .use(store).use(ElLoading)
     .mount('#app')
 
 

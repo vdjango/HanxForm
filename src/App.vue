@@ -184,30 +184,28 @@ export default {
 </script>
 
 
-<style scoped lang="less">
+<style lang="less">
 html, body {
   margin: 0;
   padding: 0;
   border: 0;
-  /*overflow: hidden;*/
-
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB',
   'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
 }
 
 
-.el-header {
-  padding: 0 !important;
-
-  .el-menu {
-    ::v-deep .el-submenu {
-      float: right;
-    }
-
-    ::v-deep .el-menu-item {
-      float: right;
-    }
-  }
-}
+//.el-header {
+//  padding: 0 !important;
+//
+//  .el-menu {
+//    ::v-deep .el-submenu {
+//      float: right;
+//    }
+//
+//    ::v-deep .el-menu-item {
+//      float: right;
+//    }
+//  }
+//}
 
 </style>

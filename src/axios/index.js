@@ -32,7 +32,9 @@ import {
     authorizationRegister,
     activity,
     activityAMap,
-    activityTicket
+    activityTicket,
+    paymentPayInfo,
+    paymentPayRefund
 } from './restful'
 
 axios.defaults.baseURL = config.API.BASE_URL
@@ -79,6 +81,7 @@ export default {
         if (pagination) {
             let offset = pagination.index
             const limit = pagination.pageSize
+
             if (offset && limit) {
                 offset = Math.round(limit * (offset - 1) + 0.4)
                 data['offset'] = offset
@@ -193,6 +196,31 @@ export default {
     activityTicket: function (method = 'GET', data = {}, index = null, pagination = {}) {
         return Axios(activityTicket(index), method, this.Data(data, pagination))
     },
+
+    /**
+     * 活动已购门票信息
+     * @param method
+     * @param data
+     * @param index
+     * @param pagination
+     * @returns {Promise<unknown>}
+     */
+    paymentPayInfo: function (method = 'GET', data = {}, index = null, pagination = {}) {
+        return Axios(paymentPayInfo(index), method, this.Data(data, pagination))
+    },
+
+    /**
+     * 活动退票信息
+     * @param method
+     * @param data
+     * @param index
+     * @param pagination
+     * @returns {Promise<unknown>}
+     */
+    paymentPayRefund: function (method = 'GET', data = {}, index = null, pagination = {}) {
+        return Axios(paymentPayRefund(index), method, this.Data(data, pagination))
+    },
+
 
     Dome: function (method = 'GET', data = {}, index = null, pagination = {}) {
         return Axios('/', method, this.Data(data, pagination))
