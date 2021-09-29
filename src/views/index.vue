@@ -1,17 +1,17 @@
 <template>
   <el-container>
-    <el-header style="z-index: 100" class="menu-header">
-      <el-menu default-active="1" mode="horizontal" router>
-        <el-menu-item
-            v-for="(item, index) in topHeader" :key="index"
-            :index="item.toRouter.name"
-            :route="item.toRouter"
-        >
-          <i :class="item.icon"></i>
-          <template #title>{{ item.name }}</template>
-        </el-menu-item>
-      </el-menu>
-    </el-header>
+<!--    <el-header style="z-index: 100" class="menu-header">-->
+<!--      <el-menu default-active="1" mode="horizontal" router>-->
+<!--        <el-menu-item-->
+<!--            v-for="(item, index) in topHeader" :key="index"-->
+<!--            :index="item.toRouter.name"-->
+<!--            :route="item.toRouter"-->
+<!--        >-->
+<!--          <i :class="item.icon"></i>-->
+<!--          <template #title>{{ item.name }}</template>-->
+<!--        </el-menu-item>-->
+<!--      </el-menu>-->
+<!--    </el-header>-->
     <el-container>
       <el-aside width="auto">
         <el-menu default-active="4" :collapse="isCollapse" style="height: 100vh" router>
