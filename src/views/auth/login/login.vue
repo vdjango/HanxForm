@@ -10,6 +10,7 @@
       <el-form-item prop="username" label="用户名">
         <el-input type="text"
                   v-model="loginForm.username"
+                  @keyup.enter="onLogin"
                   auto-complete="off"
                   placeholder="用户名"
         ></el-input>
@@ -17,6 +18,7 @@
       <el-form-item prop="password" label="密码">
         <el-input type="password"
                   v-model="loginForm.password"
+                  @keyup.enter="onLogin"
                   auto-complete="off"
                   placeholder="密码"
         ></el-input>

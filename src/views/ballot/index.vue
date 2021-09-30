@@ -75,8 +75,16 @@
                     </el-button>
                     <template #dropdown>
                       <el-dropdown-menu>
-                        <el-dropdown-item v-if="scope.row.status === 0" @click="refundTicket(scope)">退票
-                        </el-dropdown-item>
+                        <template
+                            v-if="scope.row.refund_status === 'NONE'"
+                        >
+                          <el-dropdown-item v-if="scope.row.status === 0" @click="refundTicket(scope)">退票
+                          </el-dropdown-item>
+                        </template>
+                        <template v-else>
+                          <el-dropdown-item disabled v-if="scope.row.status === 0" @click="refundTicket(scope)">退票
+                          </el-dropdown-item>
+                        </template>
                         <el-dropdown-item v-if="scope.row.status != 0">删除</el-dropdown-item>
                       </el-dropdown-menu>
                     </template>
@@ -94,7 +102,100 @@
                 :total="restfulPayInfoTable.count"
             ></el-pagination>
           </el-tab-pane>
-          <el-tab-pane label="退票中" name="退票中">退票中</el-tab-pane>
+          <el-tab-pane label="退票中" name="退票中">
+            <el-table
+                v-loading="loading"
+                ref="multipleTable"
+                :data="restfulPayRefundTable.results"
+                @row-dblclick="rowClickAll"
+                tooltip-effect="dark"
+                style="width: 100%"
+            >
+              <el-table-column type="selection" width="55"></el-table-column>
+              <el-table-column label="订单号" width="280">
+                <template #default="scope">{{ scope.row.out_trade_no }}</template>
+              </el-table-column>
+              <el-table-column label="票种">
+                <template #default="scope">{{ scope.row.trade_no_key_.name }}</template>
+              </el-table-column>
+              <el-table-column label="姓名" width="200">
+                <template #default="scope">{{ scope.row.pay_user_info_full_name }}</template>
+              </el-table-column>
+              <el-table-column label="价格" width="150">
+                <template #default="scope">{{ scope.row.amount_refund / 100 }}元</template>
+              </el-table-column>
+              <el-table-column label="状态" align="right" width="120">
+                <template #default="scope">
+                  <el-popover placement="left" :width="400" trigger="click">
+                    <template #reference>
+                      <el-tag :type="ballot.refund_tag[scope.row.refund_status]">
+                        {{ ballot.refund_status[scope.row.refund_status] }}
+                      </el-tag>
+                    </template>
+                    <template v-if="scope.row.refund_status === 'ABNORMAL'">
+                      {{ scope.row.system_message }}
+                    </template>
+                  </el-popover>
+
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" align="right" width="300">
+                <template #header>
+                  <el-autocomplete
+                      v-model.lazy="search_input"
+                      multiple
+                      filterable
+                      disabled
+                      placeholder="未实现"
+                      :fetch-suggestions="remoteMethod"
+                  >
+                    <template #suffix>
+                      <el-popover disabled placement="left" :width="400" trigger="click">
+                        <template #reference>
+                          <el-button type="text" class="el-icon-edit el-input__icon"></el-button>
+                        </template>
+                        <el-radio-group v-model="search_radio">
+                          <el-radio label="user_ful__full_name__icontains">姓名</el-radio>
+                          <el-radio label="user_ful__mobile__icontains">电话</el-radio>
+                          <el-radio label="user_ful__certificates_no__icontains">身份证</el-radio>
+                          <el-radio label="out_trade_no__icontains">订单号</el-radio>
+                        </el-radio-group>
+                      </el-popover>
+                    </template>
+                  </el-autocomplete>
+                </template>
+                <template #default="scope">
+                  <el-dropdown trigger="click">
+                    <el-button type="primary">
+                      操作<i class="el-icon-arrow-down el-icon--right"></i>
+                    </el-button>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <template
+                            v-if="scope.row.refund_status === 'WAITING' || scope.row.refund_status === 'ABNORMAL'"
+                        >
+                          <el-dropdown-item @click="refundTicketSuccess(scope)">通过</el-dropdown-item>
+                        </template>
+                        <template v-else>
+                          <el-dropdown-item disabled>通过</el-dropdown-item>
+                        </template>
+                        <!--                        <el-dropdown-item v-if="scope.row.status != 0">删除</el-dropdown-item>-->
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination
+                class="pagination"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :page-sizes="[10, 20, 50, 100]"
+                :page-size="restfulPayRefundTable.pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="restfulPayRefundTable.count"
+            ></el-pagination>
+          </el-tab-pane>
           <el-tab-pane label="已退票" name="已退票">已退票</el-tab-pane>
         </el-tabs>
 
@@ -306,12 +407,14 @@ export default {
           'CLOSE': '退款关闭',
           'ABNORMAL': '退款异常',
           'WAITING': '等待退款',
+          'LOADING': '退款中',
           'NONE': '未发起',
         },
         refund_tag: {
           'SUCCESS': 'success',
           'CLOSE': 'info',
           'ABNORMAL': 'danger',
+          'LOADING': 'default',
           'WAITING': 'warning',
           'NONE': 'default',
         },
@@ -334,6 +437,8 @@ export default {
       },
 
       restful: {},
+
+      // 所有 已购票种
       restfulPayInfoTable: {
         count: 0,
         next: null,
@@ -342,6 +447,16 @@ export default {
         pageSize: 10,
         results: []
       },
+      // 退票中
+      restfulPayRefundTable: {
+        count: 0,
+        next: null,
+        previous: null,
+        index: 1,
+        pageSize: 10,
+        results: []
+      },
+
       // 远程搜索
       search_input: null,
       search_restful: [],
@@ -430,7 +545,7 @@ export default {
         pay_user_info_key: null,
         pay_user_key: null,
         pay_key: null,
-
+        trade_no_key: null,
         // amount_payer_refund: null,
         // amount_payer_total: null,
         amount_refund: 0, // 退款金额
@@ -449,6 +564,7 @@ export default {
     this.requestPayInfo().finally(() => {
       loading.close()
     })
+    this.requestPayRefund()
   },
   components: {
     ElPageHeader,
@@ -505,7 +621,7 @@ export default {
       this.requestPayInfo()
     },
     //
-    requestPayRefund(method = 'GET', data = {}, index = null,) {
+    requestPayRefund(method = 'GET', data = {}, index = null) {
       /**
        * 活动退票信息
        * 请求数据，增删查改
@@ -513,20 +629,31 @@ export default {
       const loading = ElLoading.service({
         lock: true,
       })
-      const pagination = {
-        // count: this.restfulAllTable.count,
-        // next: this.restfulAllTable.next,
-        // previous: this.restfulAllTable.previous,
-        // index: this.restfulAllTable.index,
-        // pageSize: this.restfulAllTable.pageSize
+      let pagination = {}
+      if (method === 'GET') {
+        pagination.count = this.restfulPayRefundTable.count
+        pagination.next = this.restfulPayRefundTable.next
+        pagination.previous = this.restfulPayRefundTable.previous
+        pagination.index = this.restfulPayRefundTable.index
+        pagination.pageSize = this.restfulPayRefundTable.pageSize
+        // let pagination = {
+        //   count: this.restfulPayRefundTable.count,
+        //   next: this.restfulPayRefundTable.next,
+        //   previous: this.restfulPayRefundTable.previous,
+        //   index: this.restfulPayRefundTable.index,
+        //   pageSize: this.restfulPayRefundTable.pageSize
+        // }
       }
+
       console.log('pagination', pagination)
       return axios.paymentPayRefund(method, data, index, pagination).then((response) => {
-        console.log(response)
-        // this.restfulAllTable.count = response.data.count
-        // this.restfulAllTable.next = response.data.next
-        // this.restfulAllTable.previous = response.data.previous
-        // this.restfulAllTable.results = response.data.results
+        console.log('paymentPayRefund', response)
+        if (method === 'GET') {
+          this.restfulPayRefundTable.count = response.data.count
+          this.restfulPayRefundTable.next = response.data.next
+          this.restfulPayRefundTable.previous = response.data.previous
+          this.restfulPayRefundTable.results = response.data.results
+        }
       }).finally(() => {
         loading.close()
       })
@@ -633,6 +760,7 @@ export default {
       this.refund_restful.openid = scope.row.openid
       this.refund_restful.pay_user_info_key = scope.row.user_ful
       this.refund_restful.pay_user_key = scope.row.userid
+      this.refund_restful.trade_no_key = scope.row.trade_no
 
       this.refund_restful.amount_total = scope.row.money  // 原订单金额
       this.refund_restful.amount_refund = scope.row.money  // 退款金额
@@ -644,8 +772,27 @@ export default {
       console.log('this.refund_restful', this.refund_restful)
     },
     refundTicketClick() {
+      /**
+       * 手动-退票
+       **/
       this.requestPayRefund('POST', this.refund_restful).then((response) => {
         this.refund_center_dialog_visible = false
+      }).finally(() => {
+        this.requestPayInfo()
+        this.requestPayRefund()
+      })
+
+    },
+    refundTicketSuccess(item) {
+      /**
+       * 通过-退票
+       */
+      this.requestPayRefund('PATCH', {refund_status: 'LOADING'}, item.row.id).then((response) => {
+        console.log(response)
+        // this.refund_center_dialog_visible = false
+      }).finally(() => {
+        this.requestPayInfo()
+        this.requestPayRefund()
       })
     }
   }

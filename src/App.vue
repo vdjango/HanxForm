@@ -125,7 +125,7 @@ export default {
     /* 登录成功后路由跳转 */
     routerIndex() {
       this.$nextTick(() => {
-        this.$router.push({name: 'activity'})
+        this.$router.push({name: 'ballot'})
       })
     },
     /* 未登录路由跳转 */
