@@ -33,5 +33,11 @@ export default {
     },
     getTopHeader: function (state) {
         return state.topHeader
+    },
+    getIsDefaultActiveLeftMenu: function (state) {
+        /**
+         * 当前展示的leftMenu菜单
+         */
+        return state.isDefaultActiveLeftMenu
     }
 }

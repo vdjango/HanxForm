@@ -1,35 +1,28 @@
 <template>
   <el-container>
-<!--    <el-header style="z-index: 100" class="menu-header">-->
-<!--      <el-menu default-active="1" mode="horizontal" router>-->
-<!--        <el-menu-item-->
-<!--            v-for="(item, index) in topHeader" :key="index"-->
-<!--            :index="item.toRouter.name"-->
-<!--            :route="item.toRouter"-->
-<!--        >-->
-<!--          <i :class="item.icon"></i>-->
-<!--          <template #title>{{ item.name }}</template>-->
-<!--        </el-menu-item>-->
-<!--      </el-menu>-->
-<!--    </el-header>-->
-    <el-container>
-      <el-aside width="auto">
-        <el-menu default-active="4" :collapse="isCollapse" style="height: 100vh" router>
-          <el-menu-item
-              v-for="(item, index) in leftMenu" :key="index"
-              :index="item.toRouter.name"
-              :route="item.toRouter"
-          >
-            <i :class="item.icon"></i>
-            <template #title>{{ item.name }}</template>
-          </el-menu-item>
-        </el-menu>
+    <el-aside style="width: max-content !important;">
+      <el-menu :default-active="IsDefaultActiveLeftMenu"
+               :collapse="isCollapse" @select="selectMenuOpenClase"
+               style="height: 100vh"
+      >
+        <el-menu-item index="open/clase">
+          <i :class="OpenCloeMenu.isCollapseIcon"></i>
+          <template #title>{{ OpenCloeMenu.isCollapseTest }}</template>
+        </el-menu-item>
+        <el-menu-item
+            v-for="(item, index) in leftMenu" :key="index"
+            :index="item.toRouter.name"
+            :route="item.toRouter"
+        >
+          <i :class="item.icon"></i>
+          <template #title>{{ item.name }}</template>
+        </el-menu-item>
+      </el-menu>
 
-      </el-aside>
-      <el-main>
-        <router-view name="index" v-if="isRouterAlive"></router-view>
-      </el-main>
-    </el-container>
+    </el-aside>
+    <el-main>
+      <router-view name="index" v-if="isRouterAlive"></router-view>
+    </el-main>
   </el-container>
 </template>
 
@@ -40,8 +33,12 @@ import {
   ElContainer,
   ElAside,
   ElHeader,
-  ElMain, ElMenu, ElMenuItemGroup, ElMenuItem, ElSubmenu
+  ElMain, ElMenu, ElMenuItemGroup, ElMenuItem, ElSubmenu, ElIcon,
 } from 'element-plus'
+
+import {
+  ChatRound
+} from '@element-plus/icons'
 
 export default {
   name: 'Index',
@@ -73,6 +70,13 @@ export default {
       topActive: '用户管理',
       topHeader: [],
       leftMenu: [],
+      OpenCloeMenu: {
+        isCollapse: true,
+        isCollapseTest: '展开',
+        isCollapseIcon: 'el-icon-arrow-right',
+        width: 65
+      },
+      IsDefaultActiveLeftMenu: 'index',
       topAuthUser: {
         /**
          * auth: 用户信息
@@ -175,7 +179,30 @@ export default {
       this.$nextTick(() => {
         this.$store.commit('auth/clearAutherization')
       })
-    }
+    },
+    selectMenuOpenClase(index) {
+      /**
+       * 侧边菜单
+       */
+      if (index === 'open/clase') {
+        // 展开收起菜单
+        if (this.isCollapse) {
+          this.OpenCloeMenu.isCollapseTest = '收起'
+          this.OpenCloeMenu.isCollapseIcon = 'el-icon-arrow-left'
+          this.OpenCloeMenu.width = 65
+        } else {
+          this.OpenCloeMenu.width = 200
+          this.OpenCloeMenu.isCollapseTest = '展开'
+          this.OpenCloeMenu.isCollapseIcon = 'el-icon-arrow-right'
+        }
+        this.isCollapse = !this.isCollapse
+      } else {
+        this.$router.push({
+          name: index
+        })
+      }
+      console.log(index)
+    },
   },
   components: {
     ElContainer,
@@ -185,7 +212,9 @@ export default {
     ElMenu,
     ElMenuItemGroup,
     ElMenuItem,
-    'el-sub-menu': ElSubmenu
+    'el-sub-menu': ElSubmenu,
+    ElIcon,
+    ChatRound
   },
   computed: {
     getLeftMenus() {
@@ -196,6 +225,9 @@ export default {
     },
     getTopActives() {
       return this.$store.getters['getTopActive']
+    },
+    getIsDefaultActiveLeftMenu() {
+      return this.$store.getters['getIsDefaultActiveLeftMenu']
     }
   },
   watch: {
@@ -208,6 +240,9 @@ export default {
     getTopActives(vale,) {
       console.log(vale)
       this.topActive = vale
+    },
+    getIsDefaultActiveLeftMenu(vale,) {
+      this.IsDefaultActiveLeftMenu = vale
     }
   },
 }

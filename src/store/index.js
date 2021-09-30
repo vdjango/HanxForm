@@ -12,10 +12,19 @@ const debug = process.env.NODE_ENV !== 'production'
 export default createStore({
     state: {
         isRouterAlive: false, // isRouterAlive控制显示，提供reload方法刷新App视图
+        isDefaultActiveLeftMenu: 'index',  // 当前展示的leftMenu菜单
         leftMenu: [
             {
                 toRouter: {
-                    name: 'order-user'
+                    name: 'index'
+                },
+                name: '首页',
+                icon: 'el-icon-s-home',
+                run: null
+            },
+            {
+                toRouter: {
+                    name: 'activity'
                 },
                 name: '活动',
                 icon: 'el-icon-s-flag',
@@ -31,7 +40,7 @@ export default createStore({
             },
              {
                 toRouter: {
-                    name: 'admin_school_learning'
+                    name: ''
                 },
                 name: '用户',
                 icon: 'el-icon-s-custom',
@@ -39,7 +48,7 @@ export default createStore({
             },
             {
                 toRouter: {
-                    name: 'admin_setting_system'
+                    name: ''
                 },
                 name: '设置',
                 icon: 'el-icon-setting',

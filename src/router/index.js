@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
 
 const Index = () => import('../views/index')
+const IndexInfo = () => import('../views/index/index')
 const Auth = () => import('../views/auth/auth')
 const AuthLogin = () => import('../views/auth/login/login')
 
@@ -17,76 +18,11 @@ import store from '../store/index'
 
 
 const routes = [
-    // {
-    //     path: '/',
-    //     redirect: {
-    //         name: 'index'
-    //     }
-    // },
     {
         path: '/',
-        name: 'index',
-        component: Index,
-        meta: {
-            requiresAuth: true
-        },
-        children: [
-            {
-                path: 'ballot',
-                name: 'ballot',
-                meta: {
-                    requiresAuth: true
-                },
-                components: {
-                    index: BallotIndex
-                }
-            },
-            {
-                path: 'order',
-                name: 'order',
-                meta: {
-                    requiresAuth: true
-                },
-                components: {
-                    index: Order
-                }
-            }
-        ]
-    },
-    {
-        path: '/activity',
-        name: 'activity',
-        component: CreateActivity,
-        meta: {
-            requiresAuth: true
-        },
-        props: () => {
-            return {activeId: store.getters['activity/getActiveFormId']}
-        },
-        children: [
-            {
-                path: 'ticket',
-                name: 'ticket',
-                props: true,
-                meta: {
-                    requiresAuth: true
-                },
-                components: {
-                    activity: CreateActivityTicket
-                }
-            },
-            {
-                path: 'writing',
-                name: 'writing',
-                props: true,
-                meta: {
-                    requiresAuth: true
-                },
-                components: {
-                    activity: CreateActivityWriting
-                }
-            },
-        ]
+        redirect: {
+            name: 'index'
+        }
     },
     {
         path: '/auth',
@@ -94,6 +30,75 @@ const routes = [
             name: 'login'
         }
     },
+    {
+        path: '/',
+        component: Index,
+        meta: {
+            requiresAuth: true
+        },
+        children: [
+            {
+                path: '',
+                name: 'index',
+                components: {
+                    index: IndexInfo
+                }
+            },
+            {
+                path: 'ballot',
+                name: 'ballot',
+                components: {
+                    index: BallotIndex
+                }
+            },
+            {
+                path: 'order',
+                name: 'order',
+                components: {
+                    index: Order
+                }
+            },
+            {
+                path: 'activity',
+                name: 'activity',
+                components: {
+                    index: CreateActivity
+                },
+                // component: CreateActivity,
+                meta: {
+                    requiresAuth: true
+                },
+                props: () => {
+                    return {activeId: store.getters['activity/getActiveFormId']}
+                },
+                children: [
+                    {
+                        path: 'ticket',
+                        name: 'ticket',
+                        props: true,
+                        meta: {
+                            requiresAuth: true
+                        },
+                        components: {
+                            activity: CreateActivityTicket
+                        }
+                    },
+                    {
+                        path: 'writing',
+                        name: 'writing',
+                        props: true,
+                        meta: {
+                            requiresAuth: true
+                        },
+                        components: {
+                            activity: CreateActivityWriting
+                        }
+                    },
+                ]
+            },
+        ]
+    },
+
     {
         path: '/auth',
         name: 'auth',

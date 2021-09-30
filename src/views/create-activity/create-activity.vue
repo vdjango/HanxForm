@@ -1,44 +1,6 @@
 <template>
   <div class="create-activity">
     <el-container>
-      <el-aside style="width: max-content !important;">
-        <el-menu
-            default-active="1-4-1"
-            class="el-menu-max"
-            ref="menuleft"
-            :collapse="menu_lest.isCollapse"
-            @select="selectMenuOpenClase"
-        >
-          <el-menu-item index="open/clase">
-            <i :class="menu_lest.isCollapseIcon"></i>  <!--el-icon-arrow-left-->
-            <template #title>{{ menu_lest.isCollapseTest }}</template>
-          </el-menu-item>
-
-          <el-submenu index="1">
-            <template #title>
-              <i class="el-icon-location"></i>
-              <span>导航一</span>
-            </template>
-            <el-menu-item-group title="分组一">
-              <template #title>分组一</template>
-              <el-menu-item index="1-1">选项1</el-menu-item>
-              <el-menu-item index="1-2">选项2</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
-          <el-menu-item index="2">
-            <i class="el-icon-menu"></i>
-            <template #title>预览</template>
-          </el-menu-item>
-          <el-menu-item index="preview" disabled>
-            <i class="el-icon-document"></i>
-            <template #title>导航三</template>
-          </el-menu-item>
-          <el-menu-item index="4">
-            <i class="el-icon-setting"></i>
-            <template #title>导航四</template>
-          </el-menu-item>
-        </el-menu>
-      </el-aside>
       <el-main>
         <el-row :gutter="10">
           <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="6">
@@ -55,15 +17,13 @@
 
               <div class="active-main">
                 <div v-show="active.nextNum === 0">
-                  <el-form ref="forms" label-width="80px" :model="forms" :rules="rules"
-                           status-icon
-                  >
+                  <el-form ref="forms" label-width="80px" :model="forms" :rules="rules" status-icon>
                     <el-form-item label="活动主题" prop="name" size="mini">
-                      <el-input v-model="forms.name"></el-input>
+                      <el-input v-model="forms.name" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="封面图" prop="base64result" size="mini">
-                      <image-upload-cropper @result="base64result" style="display: flex;" :src="forms.base64result"
-                      ></image-upload-cropper>
+                      <image-upload-cropper @result="base64result" style="display: flex;" :src="forms.base64result">
+                      </image-upload-cropper>
                     </el-form-item>
                     <el-form-item label="活动时间" prop="date" size="small">
                       <el-date-picker

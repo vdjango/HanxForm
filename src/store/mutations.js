@@ -33,5 +33,11 @@ export default {
     },
     setTopActive(state, value) {
         state.topActive = value
+    },
+    setIsDefaultActiveLeftMenu(state, value) {
+        /**
+         * 当前展示的leftMenu菜单
+         */
+        state.isDefaultActiveLeftMenu = value
     }
 }

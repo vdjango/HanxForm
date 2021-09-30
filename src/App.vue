@@ -165,7 +165,8 @@ export default {
     },
     getTopActives() {
       return this.$store.getters['getTopActive']
-    }
+    },
+
   },
   watch: {
     getLeftMenus(vale,) {
@@ -177,7 +178,8 @@ export default {
     getTopActives(vale,) {
       console.log(vale)
       this.topActive = vale
-    }
+    },
+
   },
 }
 

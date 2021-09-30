@@ -5,6 +5,7 @@
         v-if="(!result && !src)"
         class="upload-demo"
         drag
+        action=""
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :on-change="selectFile"

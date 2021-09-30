@@ -32,7 +32,8 @@ import {
     ElCarouselItem,
     ElLoading,
     ElMessage,
-    ElAutocomplete, ElDrawer, ElNotification, ElMessageBox
+    ElAutocomplete, ElDrawer, ElNotification, ElMessageBox,
+    ElImage
 } from 'element-plus'
 import {VueUeditorWrap} from "vue-ueditor-wrap";
 import amapJsapiLoadVue from "../../components/amap-jsapi-load-vue/amap-jsapi-load-vue";
@@ -90,7 +91,8 @@ export default {
         'el-step': ElStep,
         'el-carousel': ElCarousel,
         'el-carousel-item': ElCarouselItem,
-        'ticket-card': ticketCard
+        'ticket-card': ticketCard,
+        ElImage
     },
     data() {
         const validateAmap = function (rule, value, callback) {
@@ -290,8 +292,7 @@ export default {
             return new Promise((resolve) => {
                 resolve(fun())
             })
-        }
-        ,
+        },
         /**
          * 编辑器相关
          * @param editorInstance
@@ -528,8 +529,7 @@ export default {
             this.$nextTick(() => {
                 this.$refs.forms.validateField('base64result');
             })
-        }
-        ,
+        },
 
         /**
          * 步骤

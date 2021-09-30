@@ -9,9 +9,10 @@
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "^1.0.1",
+    "@element-plus/icons": "0.0.11",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "element-plus": "^1.0.2-beta.28",
+    "element-plus": "^1.0.2-beta.71",
     "es6-promise": "^4.2.8",
     "js-cookie": "^2.2.1",
     "js-striphtml": "^1.1.2",

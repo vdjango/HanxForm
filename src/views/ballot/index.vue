@@ -25,7 +25,9 @@
               <el-table-column type="selection" width="55"></el-table-column>
               <el-table-column prop="name" label="票种"></el-table-column>
               <el-table-column label="姓名" width="200">
-                <template #default="scope">{{ scope.row.user_ful_.full_name }}</template>
+                <template #default="scope">
+                  <template v-if="scope.row.user_ful_">{{ scope.row.user_ful_.full_name }}</template>
+                </template>
               </el-table-column>
               <el-table-column label="价格" width="150">
                 <template #default="scope">{{ scope.row.money / 100 }}元</template>
@@ -42,7 +44,9 @@
                 <template #default="scope">{{ scope.row.out_trade_no }}</template>
               </el-table-column>
               <el-table-column label="购票日期" align="right" width="250">
-                <template #default="scope">{{ scope.row.trade_no_restful.create_date }}</template>
+                <template #default="scope">
+                  <template v-if="scope.row.trade_no_restful">{{ scope.row.trade_no_restful.create_date }}</template>
+                </template>
               </el-table-column>
               <el-table-column label="操作" align="right" width="300">
                 <template #header>
@@ -188,9 +192,9 @@
             </el-table>
             <el-pagination
                 class="pagination"
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :page-sizes="[10, 20, 50, 100]"
+                @size-change="handleSizeChangeSuccess"
+                @current-change="handleCurrentChangeSuccess"
+                :page-sizes="[2, 10, 20, 50, 100]"
                 :page-size="restfulPayRefundTable.pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="restfulPayRefundTable.count"
@@ -225,21 +229,26 @@
             <i class="el-icon-user"></i>
             姓名
           </template>
-          {{ refund_center_dialog_data.user_ful_.full_name }}
+          <template v-if="refund_center_dialog_data.user_ful_">
+            {{ refund_center_dialog_data.user_ful_.full_name }}
+          </template>
+
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>
             <i class="el-icon-mobile-phone"></i>
             电话
           </template>
-          {{ refund_center_dialog_data.user_ful_.mobile }}
+          <template v-if="refund_center_dialog_data.user_ful_">
+            {{ refund_center_dialog_data.user_ful_.mobile }}
+          </template>
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>
             <i class="el-icon-location-outline"></i>
-            Place
+            其他
           </template>
-          Suzhou
+          {{ refund_center_dialog_data.off_message }}
         </el-descriptions-item>
         <el-descriptions-item>
           <template #label>
@@ -253,14 +262,19 @@
         <el-descriptions-item>
           <template #label>
             <i class="el-icon-tickets"></i>
-            证件
+            证件 -
           </template>
           <el-tag size="small">
-            <template v-if="refund_center_dialog_data.user_ful_.certificates === 1">身份证</template>
-            <template v-else-if="refund_center_dialog_data.user_ful_.certificates === 2">护照</template>
-            <template v-else>未知</template>
+            <template v-if="refund_center_dialog_data.user_ful_">
+              <template v-if="refund_center_dialog_data.user_ful_.certificates === 1">身份证</template>
+              <template v-else-if="refund_center_dialog_data.user_ful_.certificates === 2">护照</template>
+              <template v-else>未知</template>
+            </template>
           </el-tag>
-          - {{ refund_center_dialog_data.user_ful_.certificates_no }}
+
+          <template v-if="refund_center_dialog_data.user_ful_">
+            {{ refund_center_dialog_data.user_ful_.certificates_no }}
+          </template>
         </el-descriptions-item>
       </el-descriptions>
       <el-descriptions
@@ -558,11 +572,15 @@ export default {
     }
   },
   created() {
-    const loading = ElLoading.service({
-      lock: true,
-    })
+
+  },
+  mounted() {
+    this.$store.commit('setIsDefaultActiveLeftMenu', 'ballot')
+    // const loading = ElLoading.service({
+    //   lock: true,
+    // })
     this.requestPayInfo().finally(() => {
-      loading.close()
+      // loading.close()
     })
     this.requestPayRefund()
   },
@@ -613,6 +631,10 @@ export default {
       this.restfulPayInfoTable.pageSize = val
       this.requestPayInfo()
     },
+    handleSizeChangeSuccess(val) {
+      this.restfulPayRefundTable.pageSize = val
+      this.requestPayRefund()
+    },
     handleCurrentChange(val) {
       /**
        * 分页-第几页
@@ -620,15 +642,19 @@ export default {
       this.restfulPayInfoTable.index = val
       this.requestPayInfo()
     },
+    handleCurrentChangeSuccess(val) {
+      this.restfulPayRefundTable.index = val
+      this.requestPayRefund()
+    },
     //
     requestPayRefund(method = 'GET', data = {}, index = null) {
       /**
        * 活动退票信息
        * 请求数据，增删查改
        **/
-      const loading = ElLoading.service({
-        lock: true,
-      })
+      // const loading = ElLoading.service({
+      //   lock: true,
+      // })
       let pagination = {}
       if (method === 'GET') {
         pagination.count = this.restfulPayRefundTable.count
@@ -655,7 +681,7 @@ export default {
           this.restfulPayRefundTable.results = response.data.results
         }
       }).finally(() => {
-        loading.close()
+        // loading.close()
       })
     },
     requestPayInfo(method = 'GET', data = {}, index = null,) {
