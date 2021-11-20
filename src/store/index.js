@@ -40,7 +40,7 @@ export default createStore({
             },
              {
                 toRouter: {
-                    name: ''
+                    name: 'users'
                 },
                 name: '用户',
                 icon: 'el-icon-s-custom',
@@ -48,7 +48,7 @@ export default createStore({
             },
             {
                 toRouter: {
-                    name: ''
+                    name: 'settings'
                 },
                 name: '设置',
                 icon: 'el-icon-setting',

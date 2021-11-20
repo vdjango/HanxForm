@@ -26,6 +26,7 @@ import Cookies from '@/utils/Cookie'
 import config from '@/../dev.env'
 
 import {
+    authIndex,
     authorization,
     authorizationRefresh,
     authorizationVerify,
@@ -158,6 +159,7 @@ export default {
     authorizationRegister: function (method = 'POST', data = {}) {
         return Axios(authorizationRegister(), method, this.Data(data))
     },
+
     /**
      * 活动信息
      * @param method 请求方式
@@ -171,6 +173,18 @@ export default {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     }) {
         return Axios(activity(index), method, this.Data(data, pagination), headers)
+    },
+
+    /**
+     * 获取系统信息
+     * @param method
+     * @param data
+     * @param index
+     * @param pagination
+     * @returns {Promise<unknown>}
+     */
+    authIndex: function (method = 'GET', data = {}, index = null, pagination = {}) {
+        return Axios(authIndex(index), method, this.Data(data, pagination))
     },
 
     /**

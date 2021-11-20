@@ -34,10 +34,14 @@
               </el-table-column>
               <el-table-column label="状态" align="right" width="120">
                 <template #default="scope">
-                  <el-tag :type="ballot.tag[scope.row.status]">{{ ballot.status[scope.row.status] }}</el-tag>
+
                   <el-tag :type="ballot.refund_tag[scope.row.refund_status]" v-if="scope.row.refund_status !== 'NONE'">
                     {{ ballot.refund_status[scope.row.refund_status] }}
                   </el-tag>
+                  <el-tag :type="ballot.tag[scope.row.status]" v-else>
+                    {{ ballot.status[scope.row.status] }}
+                  </el-tag>
+
                 </template>
               </el-table-column>
               <el-table-column label="订单号" align="right" width="280">
@@ -425,12 +429,12 @@ export default {
           'NONE': '未发起',
         },
         refund_tag: {
-          'SUCCESS': 'success',
+          'SUCCESS': 'default',
           'CLOSE': 'info',
           'ABNORMAL': 'danger',
-          'LOADING': 'default',
+          'LOADING': 'warning',
           'WAITING': 'warning',
-          'NONE': 'default',
+          'NONE': 'info',
         },
         status: {
           '-4': '工作人员/后台退款', // TODO DELETE
@@ -572,15 +576,10 @@ export default {
     }
   },
   created() {
-
+    this.$store.commit('setIsDefaultActiveLeftMenu', 'ballot')
   },
   mounted() {
-    this.$store.commit('setIsDefaultActiveLeftMenu', 'ballot')
-    // const loading = ElLoading.service({
-    //   lock: true,
-    // })
     this.requestPayInfo().finally(() => {
-      // loading.close()
     })
     this.requestPayRefund()
   },
@@ -624,27 +623,27 @@ export default {
       const label = val.props.label
       console.log(label)
     },
-    handleSizeChange(val) {
+    handleSizeChange(val, method = 'GET') {
       /**
        * 分页-展示条目
        **/
       this.restfulPayInfoTable.pageSize = val
-      this.requestPayInfo()
+      this.requestPayInfo(method, this.search_options[this.search_radio].search)
     },
-    handleSizeChangeSuccess(val) {
+    handleSizeChangeSuccess(val, method = 'GET') {
       this.restfulPayRefundTable.pageSize = val
-      this.requestPayRefund()
+      this.requestPayRefund(method)
     },
-    handleCurrentChange(val) {
+    handleCurrentChange(val, method = 'GET') {
       /**
        * 分页-第几页
        **/
       this.restfulPayInfoTable.index = val
-      this.requestPayInfo()
+      this.requestPayInfo(method, this.search_options[this.search_radio].search)
     },
-    handleCurrentChangeSuccess(val) {
+    handleCurrentChangeSuccess(val, method = 'GET') {
       this.restfulPayRefundTable.index = val
-      this.requestPayRefund()
+      this.requestPayRefund(method)
     },
     //
     requestPayRefund(method = 'GET', data = {}, index = null) {
@@ -652,9 +651,9 @@ export default {
        * 活动退票信息
        * 请求数据，增删查改
        **/
-      // const loading = ElLoading.service({
-      //   lock: true,
-      // })
+          // const loading = ElLoading.service({
+          //   lock: true,
+          // })
       let pagination = {}
       if (method === 'GET') {
         pagination.count = this.restfulPayRefundTable.count
@@ -662,13 +661,6 @@ export default {
         pagination.previous = this.restfulPayRefundTable.previous
         pagination.index = this.restfulPayRefundTable.index
         pagination.pageSize = this.restfulPayRefundTable.pageSize
-        // let pagination = {
-        //   count: this.restfulPayRefundTable.count,
-        //   next: this.restfulPayRefundTable.next,
-        //   previous: this.restfulPayRefundTable.previous,
-        //   index: this.restfulPayRefundTable.index,
-        //   pageSize: this.restfulPayRefundTable.pageSize
-        // }
       }
 
       console.log('pagination', pagination)
@@ -723,9 +715,7 @@ export default {
        */
       let timeout
       let data_ = []
-      console.log(val)
       this.search_options[this.search_radio].search[this.search_radio] = val
-      console.log(this.search_options[this.search_radio].search)
       this.requestPayInfo('GET', this.search_options[this.search_radio].search).then((response) => {
         for (let index in this.restfulPayInfoTable.results) {
           if (this.search_radio === 'out_trade_no__icontains') {
@@ -850,6 +840,10 @@ export default {
 .pagination {
   margin-top: 20px;
   float: right;
+}
+
+.el-input__icon {
+  line-height: initial !important;
 }
 
 

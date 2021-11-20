@@ -16,7 +16,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
  */
+
 const auth = {
+    index: '',
     authorization: 'account/authorization/',
     authorizationRefresh: 'account/authorization-refresh/',
     authorizationVerify: 'account/authorization-verify/',
@@ -80,6 +82,16 @@ export function activity(index = null) {
 }
 
 /**
+ * 获取系统信息
+ * @param index
+ * @returns {string}
+ */
+export function authIndex(index = null) {
+    if ((index && index !== 'null')) return auth.index + index + '/'
+    return auth.index
+}
+
+/**
  * 活动地理位置信息
  * @param index
  * @returns {string}
@@ -88,6 +100,7 @@ export function activityAMap(index = null) {
     if ((index && index !== 'null')) return app.activity_amap + index + '/'
     return app.activity_amap
 }
+
 
 /**
  * 活动门票信息

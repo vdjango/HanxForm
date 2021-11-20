@@ -18,7 +18,6 @@
           <template #title>{{ item.name }}</template>
         </el-menu-item>
       </el-menu>
-
     </el-aside>
     <el-main>
       <router-view name="index" v-if="isRouterAlive"></router-view>

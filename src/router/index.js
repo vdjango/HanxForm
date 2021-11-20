@@ -6,13 +6,13 @@ const Auth = () => import('../views/auth/auth')
 const AuthLogin = () => import('../views/auth/login/login')
 
 const BallotIndex = () => import('../views/ballot/index')
+const UsersIndex = () => import('../views/users/index')
+const SettingsIndex = () => import('../views/settings/index')
 
-const Order = () => import('../views/order/order')
-const OrderUser = () => import('../views/order/user/index')
 
-const CreateActivity = () => import('../views/create-activity/create-activity.vue')
-const CreateActivityTicket = () => import('../views/create-activity/ticket/ticket.vue')
-const CreateActivityWriting = () => import('../views/create-activity/writing/writing.vue')
+const CreateActivity = () => import('../views/activity/create-activity.vue')
+const CreateActivityTicket = () => import('../views/activity/ticket/ticket.vue')
+const CreateActivityWriting = () => import('../views/activity/writing/writing.vue')
 
 import store from '../store/index'
 
@@ -49,13 +49,6 @@ const routes = [
                 name: 'ballot',
                 components: {
                     index: BallotIndex
-                }
-            },
-            {
-                path: 'order',
-                name: 'order',
-                components: {
-                    index: Order
                 }
             },
             {
@@ -96,6 +89,20 @@ const routes = [
                     },
                 ]
             },
+            {
+                path: 'users',
+                name: 'users',
+                components: {
+                    index: UsersIndex
+                }
+            },
+            {
+                path: 'settings',
+                name: 'settings',
+                components: {
+                    index: SettingsIndex
+                }
+            }
         ]
     },
 

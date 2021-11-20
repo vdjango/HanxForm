@@ -25,14 +25,6 @@ let auth = false
 
 router.beforeEach(async (to, from, next) => {
 
-    // store.commit('auth/setAutherization', {
-    //     pk: 1,
-    //     token: "ey3dcXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6IjE3NDgwMTE3NTUiLCJleHAiOjE2Mjc1NzEwNjEsImVtYWlsIjoiMTc0ODAxMTc1NUBxcS5jb20iLCJvcmlnX2lhdCI6MTYyNzQ4NDM3MCwicGsiOjEsImlzX3N0YWZmIjpmYWxzZSwiaXNfYWN0aXZlIjp0cnVlLCJsYXN0X2xvZ2luIjpudWxsfQ.s7oH6Oroo__Q6o1qLjSMfKGDdPezbC3YvQDyJb__V2U",
-    //     user: '1748011755',
-    //     verify: true
-    // })
-
-
     const autherization = Cookies.getCookieAutherization()
     const authorizationRefresh = async () => {
         return await axios.authorizationRefresh(autherization.token)
